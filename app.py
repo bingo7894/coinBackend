@@ -13,7 +13,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000", # สำหรับ local dev
-        "https://coin5-hognkivln-bingo7894s-projects.vercel.app" # <<--- URL จริงของ Vercel App คุณ
+        "https://coin5-hognkivln-bingo7894s-projects.vercel.app", # URL เก่า
+        "https://coin5-k17e4dv3z-bingo7894s-projects.vercel.app" # <<--- เพิ่ม URL ใหม่นี้
     ],
     allow_methods=["*"],
     allow_headers=["*"],
