@@ -1,3 +1,5 @@
+# app.py (ไฟล์ที่แก้ไข)
+
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from ultralytics import YOLO
@@ -13,8 +15,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000", # สำหรับ local dev
-        "https://coin5-hognkivln-bingo7894s-projects.vercel.app", # URL เก่า
-        "https://coin5-k17e4dv3z-bingo7894s-projects.vercel.app" # <<--- เพิ่ม URL ใหม่นี้
+        "https://coin5-hognkivln-bingo7894s-projects.vercel.app" # <<--- URL จริงของ Vercel App คุณ
     ],
     allow_methods=["*"],
     allow_headers=["*"],
@@ -51,18 +52,17 @@ def get_class_color(class_name):
 def crop_and_encode(image: Image.Image, box: list):
     cropped = image.crop((box[0], box[1], box[2], box[3]))
     buffered = io.BytesIO()
-    cropped.save(buffered, format="JPEG")
+    # ลดคุณภาพของรูปภาพที่ croped แล้วด้วย เพื่อลดขนาดของ Base64 ของแต่ละเหรียญ
+    cropped.save(buffered, format="JPEG", quality=75) # ปรับคุณภาพ
     img_str = base64.b64encode(buffered.getvalue()).decode()
     return f"data:image/jpeg;base64,{img_str}"
 
 def draw_boxes(image: Image.Image, boxes: list, labels: list, confidences: list = None):
     draw = ImageDraw.Draw(image)
-
+    
     try:
-        # ลองใช้ฟอนต์ Arial ก่อน
         font = ImageFont.truetype("arial.ttf", 20)
-    except IOError: # เปลี่ยนจาก 'except:' เป็น 'except IOError:' เพื่อจับ Error ที่เฉพาะเจาะจง
-        # ถ้าหาไม่เจอ ให้ใช้ฟอนต์เริ่มต้นแทน
+    except:
         font = ImageFont.load_default()
     
     for i, (box, label) in enumerate(zip(boxes, labels)):
@@ -128,6 +128,7 @@ async def process_image(file: UploadFile = File(...)):
             
             counts[class_name] = counts.get(class_name, 0) + 1
             
+            # ใช้ฟังก์ชัน crop_and_encode ที่ปรับคุณภาพแล้ว
             cropped_img_base64 = crop_and_encode(image, box_list)
             
             coins_with_images.append({
@@ -144,7 +145,8 @@ async def process_image(file: UploadFile = File(...)):
     labeled_image = draw_boxes(image.copy(), all_boxes, all_labels, all_confidences)
     
     buffered = io.BytesIO()
-    labeled_image.save(buffered, format="JPEG", quality=95)
+    # ลดคุณภาพของรูปภาพรวมที่ label แล้ว
+    labeled_image.save(buffered, format="JPEG", quality=75) # ปรับคุณภาพจาก 95 เป็น 75
     labeled_base64 = base64.b64encode(buffered.getvalue()).decode()
     
     for coin_type, count in counts.items():
