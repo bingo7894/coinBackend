@@ -56,10 +56,12 @@ def crop_and_encode(image: Image.Image, box: list):
 
 def draw_boxes(image: Image.Image, boxes: list, labels: list, confidences: list = None):
     draw = ImageDraw.Draw(image)
-    
+
     try:
+        # ลองใช้ฟอนต์ Arial ก่อน
         font = ImageFont.truetype("arial.ttf", 20)
-    except:
+    except IOError: # เปลี่ยนจาก 'except:' เป็น 'except IOError:' เพื่อจับ Error ที่เฉพาะเจาะจง
+        # ถ้าหาไม่เจอ ให้ใช้ฟอนต์เริ่มต้นแทน
         font = ImageFont.load_default()
     
     for i, (box, label) in enumerate(zip(boxes, labels)):
