@@ -35,5 +35,8 @@ COPY . .
 # กำหนด Environment Variable สำหรับ PORT หากจำเป็น (Railway จะให้มาอยู่แล้ว)
 ENV PORT=$PORT
 
-# ระบุ Command ที่จะรันเมื่อ Container เริ่มต้น (จาก Procfile เดิมของคุณ)
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "$PORT"]
+# *** แก้ไขบรรทัดนี้: ใช้ Shell Form ของ CMD เพื่อให้ $PORT ถูกขยายค่า ***
+CMD ["sh", "-c", "uvicorn app:app --host 0.0.0.0 --port $PORT"]
+
+# หากมี Procfile ในโปรเจกต์ Railway จะตรวจพบและอาจใช้แทน CMD
+# แต่การใส่ CMD ใน Dockerfile ก็ช่วยให้ Deploy ได้ในสภาพแวดล้อมอื่นๆ ด้วย
