@@ -1,0 +1,24 @@
+# Python specific
+__pycache__/        # ไฟล์แคช Python (คุณมี app.cpython-311.pyc ซึ่งควรถูกละเว้น)
+*.pyc               # ไฟล์คอมไพล์ Python
+*.ipynb_checkpoints # ถ้ามีการใช้ Jupyter Notebook
+venv/               # Virtual environment
+.venv/              # Virtual environment
+.mypy_cache/        # Cache ของ MyPy
+
+# IDE specific
+.vscode/            # ไฟล์การตั้งค่า VS Code
+.idea/              # ไฟล์การตั้งค่า PyCharm
+
+# Git
+.git/               # โฟลเดอร์ Git (สำคัญมาก, ไม่จำเป็นต้องอยู่ใน Image)
+
+# Other common build artifacts/logs
+*.log               # ไฟล์ Log
+.DS_Store           # ไฟล์ของ macOS
+npm-debug.log       # ถ้ามีการใช้ Node.js/npm
+
+# ไฟล์ที่คุณรู้ว่าไม่จำเป็นในการรัน Production
+# ตัวอย่าง:
+# some_big_dev_file.csv
+# test_data/
