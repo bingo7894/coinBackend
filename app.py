@@ -16,6 +16,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000", # สำหรับ local dev
         "https://coin5-a3x7dsjd7-bingo7894s-projects.vercel.app" # <<--- URL จริงของ Vercel App คุณ
+         "https://coinbackend-pi6n.onrender.com", # <--- เพิ่มบรรทัดนี้
     ],
     allow_methods=["*"],
     allow_headers=["*"],
